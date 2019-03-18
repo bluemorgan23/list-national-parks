@@ -1,11 +1,13 @@
 /* If a park has NOT been visited, it will receive a 1px solid green border. If the park HAS been visited, it will receive a 1px dashed red border. I set the display for the articles to flex in order to align the content to my liking. */
 
 #not-visited {
-    border: 1px solid green;
+    border: 3px solid green;
+    background-color: mediumaquamarine;
 }
 
 #visited {
-    border: 1px dashed red;
+    border: 3px dashed red;
+    background-color: lightsalmon 
 }
 
 article {
@@ -13,4 +15,14 @@ article {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+}
+
+body {
+    background-color: ivory;
 }
