@@ -48,7 +48,7 @@ const buildHTMLforEachPark = (park) => {
         pHead.textContent = "Weather: ";
         currentLi.textContent = "Currently: " + response.currently.summary;
         hourlyLi.textContent = "Hourly: " + response.hourly.summary;
-        weeklyLi.textContent = "Weekly: " + response.hourly.summary;
+        weeklyLi.textContent = "Weekly: " + response.daily.summary;
         parkList.appendChild(currentLi);
         parkList.appendChild(hourlyLi);
         parkList.appendChild(weeklyLi);
