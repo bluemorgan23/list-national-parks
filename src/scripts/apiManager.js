@@ -6,17 +6,7 @@ const getParks = () => {
     .then(response => response.json())
 }
 
-const getWeatherandParks = () => {
-    const myParksArray = [];
-    getParks().then(parksArray => parksArray.forEach(park => {
-        myParksArray.push(getWeather(park))
-    }))
-    return myParksArray;
-}
-
-// const getWeather = () => {
-//     getParks().then( => )
-// }
-const getWeather = (park) => {
-    return fetch(`https://api.darksky.net/forecast/32db549ae0b85861e6798d0376d401f5/${park.latitude},${park.longitude}`).then(response => response.json());
+//Fetch call that takes two parameters for latitude and longitude. This querys the database for the weather of national parks by coordinates.
+const getWeather = (parkLatitude, parkLongitude) => {
+    return fetch(`https://api.darksky.net/forecast/32db549ae0b85861e6798d0376d401f5/${parkLatitude},${parkLongitude}`).then(response => response.json());
 }
