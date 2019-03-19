@@ -17,6 +17,8 @@ checkBoxOneDiv.appendChild(checkBoxVisited);
 checkBoxOneDiv.appendChild(checkBoxOneLabel);
 mainHeaderContainer.appendChild(checkBoxOneDiv);
 
+
+
 //Create a function that serves the purpose of creating the HTML elements of the web app. For each park object, an article element is created with an <h3> and a <p> element. The text content of the h3 element is set equal to the name value of that park object. The p element is set equal to the state value of the object. If the object in question has a visited value of true, then the article element receives the id of "visited". If the visited value is false, then the article element receives the id of "not-visited". 
 //The getWeather fetch call is used to query the weather database with the respective coordinates of each park. Each time this is called, it creates a <ul> with three <li> elements with the values set equal to data pulled back from the fetch call. The resulting ul is appended to the article container below the park name and state. The article container is returned
 
@@ -74,5 +76,6 @@ const appendParksToDom = (parksArray) => {
 }
 
 //getParks() returns the array of objects from our parks API. The response is passed into the appendParksToDom function in order to list all the parks onto the DOM with their repsective names, state, and id's for whether or not they have been visited.
+
 
 getParks().then(response => appendParksToDom(response));
