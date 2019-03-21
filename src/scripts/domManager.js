@@ -1,10 +1,9 @@
 //Created a header for the page
-
+const displayContainer = document.querySelector("#display-container");
 const mainHeaderContainer = document.querySelector("#page-header");
 const mainHeaderTitle = document.createElement("h1");
 mainHeaderTitle.textContent = "National Parks List";
 mainHeaderContainer.appendChild(mainHeaderTitle);
-document.querySelector("#display-container").appendChild(mainHeaderContainer);
 const checkBoxOneDiv = document.createElement("div");
 const checkBoxOneLabel = document.createElement("label");
 checkBoxOneLabel.for = "show-visited";
@@ -13,6 +12,7 @@ const checkBoxVisited = document.createElement("input");
 checkBoxVisited.type = "checkbox";
 checkBoxVisited.name = "show-visited";
 checkBoxVisited.id = "shw-visited";
+// checkBoxVisited.addEventListener("click", showVisited);
 checkBoxOneDiv.appendChild(checkBoxVisited);
 checkBoxOneDiv.appendChild(checkBoxOneLabel);
 mainHeaderContainer.appendChild(checkBoxOneDiv);
@@ -28,6 +28,7 @@ const buildHTMLforEachPark = (park) => {
     const nameElement = document.createElement("h3");
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete Park";
+    deleteButton.id = `delete-park--${park.id}`;
     deleteButton.addEventListener("click", handleDelete);
     nameElement.textContent = park.name;
     const stateElement = document.createElement("p");
@@ -35,12 +36,13 @@ const buildHTMLforEachPark = (park) => {
     articleElement.appendChild(nameElement);
     articleElement.appendChild(stateElement);
     articleElement.appendChild(deleteButton);
+    articleElement.setAttribute("style", "display: flex")
     switch (true) {
         case (park.visited):
-            articleElement.id = "visited";
+            articleElement.classList.add("visited");
             break;
         case (park.visited === false):
-            articleElement.id = "not-visited";
+            articleElement.classList.add("not-visited");
             break;
     }
     getWeather(park.latitude, park.longitude).then(response => {
@@ -71,6 +73,10 @@ const buildHTMLforEachPark = (park) => {
 
 const appendParksToDom = (parksArray) => {
     const parksFragment = document.createDocumentFragment();
+
+    while(displayContainer.firstChild){
+        displayContainer.removeChild(displayContainer.firstChild);
+    }
 
     parksArray.forEach(item => {
         parksFragment.appendChild(buildHTMLforEachPark(item));
