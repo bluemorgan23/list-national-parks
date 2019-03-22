@@ -1,18 +1,20 @@
 //Created a header for the page
 const displayContainer = document.querySelector("#display-container");
-const mainHeaderContainer = document.querySelector("#page-header");
+const mainHeaderContainer = document.querySelector(".page-header");
 const mainHeaderTitle = document.createElement("h1");
 mainHeaderTitle.textContent = "National Parks List";
+mainHeaderTitle.id = "parks-title"
 mainHeaderContainer.appendChild(mainHeaderTitle);
 const checkBoxOneDiv = document.createElement("div");
+checkBoxOneDiv.id = "checkbox";
 const checkBoxOneLabel = document.createElement("label");
 checkBoxOneLabel.for = "show-visited";
-checkBoxOneLabel.textContent = "Show all parks visited";
+checkBoxOneLabel.textContent = "Only Show Visited Areas";
 const checkBoxVisited = document.createElement("input");
 checkBoxVisited.type = "checkbox";
 checkBoxVisited.name = "show-visited";
 checkBoxVisited.id = "shw-visited";
-// checkBoxVisited.addEventListener("click", showVisited);
+checkBoxVisited.addEventListener("click", showVisited);
 checkBoxOneDiv.appendChild(checkBoxVisited);
 checkBoxOneDiv.appendChild(checkBoxOneLabel);
 mainHeaderContainer.appendChild(checkBoxOneDiv);
@@ -23,19 +25,25 @@ mainHeaderContainer.appendChild(checkBoxOneDiv);
 //The getWeather fetch call is used to query the weather database with the respective coordinates of each park. Each time this is called, it creates a <ul> with three <li> elements with the values set equal to data pulled back from the fetch call. The resulting ul is appended to the article container below the park name and state. The article container is returned
 
 
+const buildElementWithText = (el, text) => {
+    let newEl = document.createElement(el);
+    newEl.textContent = text;
+    return newEl;
+}
+
 const buildHTMLforEachPark = (park) => {
     const articleElement = document.createElement("article");
     const nameElement = document.createElement("h3");
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete Park";
     deleteButton.id = `delete-park--${park.id}`;
-    deleteButton.addEventListener("click", handleDelete);
+    deleteButton.addEventListener("click", handleParkDelete);
     nameElement.textContent = park.name;
     const stateElement = document.createElement("p");
     stateElement.textContent = park.state;
     articleElement.appendChild(nameElement);
     articleElement.appendChild(stateElement);
-    articleElement.appendChild(deleteButton);
+    
     articleElement.setAttribute("style", "display: flex")
     switch (true) {
         case (park.visited):
@@ -47,13 +55,14 @@ const buildHTMLforEachPark = (park) => {
     }
     getWeather(park.latitude, park.longitude).then(response => {
         const fragment = document.createDocumentFragment();
-        const pHead = document.createElement("p");
+        const pHead = document.createElement("h4");
         pHead.id = "weather-header";
+        pHead.style.textDecoration = "underline"
         const parkList = document.createElement("ul");
         const currentLi = document.createElement("li");
         const hourlyLi = document.createElement("li");
         const weeklyLi = document.createElement("li");
-        pHead.textContent = "Weather: ";
+        pHead.textContent = "Weather";
         currentLi.textContent = "Currently: " + response.currently.summary;
         hourlyLi.textContent = "Hourly: " + response.hourly.summary;
         weeklyLi.textContent = "Weekly: " + response.daily.summary;
@@ -62,6 +71,7 @@ const buildHTMLforEachPark = (park) => {
         parkList.appendChild(weeklyLi);
         fragment.appendChild(pHead);
         fragment.appendChild(parkList);
+        fragment.appendChild(deleteButton);
         articleElement.appendChild(fragment);
     })
 
@@ -82,5 +92,60 @@ const appendParksToDom = (parksArray) => {
         parksFragment.appendChild(buildHTMLforEachPark(item));
     })
     document.querySelector("#display-container").appendChild(parksFragment);
+
+}
+
+const monumentsHeaderEl = buildElementWithText("div", undefined);
+monumentsHeaderEl.classList.add("page-header");
+const monumentsTitle = buildElementWithText("h1", "Monuments List");
+monumentsHeaderEl.appendChild(monumentsTitle);
+document.body.appendChild(monumentsHeaderEl);
+
+
+const monumentsContainer = document.createElement("div");
+monumentsContainer.id = "monumentsContainer";
+document.body.appendChild(monumentsContainer);
+
+const buildHTMLforEachMonument = (monument) => {
+    const articleElement = buildElementWithText("article", undefined);
+    const nameElement = buildElementWithText("h3", monument.name)
+    const deleteButton = buildElementWithText("button", "Delete Monument");
+    deleteButton.id = `delete-monument--${monument.id}`;
+    deleteButton.addEventListener("click", handleMonumentDelete);
+    const stateElement = buildElementWithText("p", monument.state);
+    articleElement.appendChild(nameElement);
+    articleElement.appendChild(stateElement);
+
+    const dateEstablished = buildElementWithText("p",`Date Established: ${monument.dateEstablished}`);
+    const size = buildElementWithText("p",`Area: ${monument.area}`);
+    articleElement.appendChild(dateEstablished);
+    articleElement.appendChild(size);
+    articleElement.appendChild(deleteButton);
+    articleElement.setAttribute("style", "display: flex")
+    switch (true) {
+        case (monument.visited):
+            articleElement.classList.add("visited");
+            break;
+        case (monument.visited === false):
+            articleElement.classList.add("not-visited");
+            break;
+    }
+   
+   
+
+    return articleElement;
+}
+
+const appendMonumentsToDom = (monumentsArray) => {
+    const monumentsFragment = document.createDocumentFragment();
+
+    while(monumentsContainer.firstChild){
+        monumentsContainer.removeChild(monumentsContainer.firstChild);
+    }
+
+    monumentsArray.forEach(item => {
+        monumentsFragment.appendChild(buildHTMLforEachMonument(item));
+    })
+    monumentsContainer.appendChild(monumentsFragment);
 
 }

@@ -7,9 +7,13 @@ const getParks = () => {
 }
 
 const getMonuments = () => {
-    return fetch("http://localhost:9099/monuments")
+    return fetch(`${url}/monuments`)
     .then(response => response.json())
 };
+
+const deleteMonument = (monumentId) => fetch(`${url}/monuments/${monumentId}`, {
+    method: "DELETE"
+})
 
 const deletePark = (parkId) => fetch(`${url}/parks/${parkId}`, {
     method: "DELETE"
