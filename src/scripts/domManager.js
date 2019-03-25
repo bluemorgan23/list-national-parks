@@ -21,9 +21,8 @@ mainHeaderContainer.appendChild(checkBoxOneDiv);
 
 
 
-//Create a function that serves the purpose of creating the HTML elements of the web app. For each park object, an article element is created with an <h3> and a <p> element. The text content of the h3 element is set equal to the name value of that park object. The p element is set equal to the state value of the object. If the object in question has a visited value of true, then the article element receives the id of "visited". If the visited value is false, then the article element receives the id of "not-visited". 
+//Create a function that serves the purpose of creating the HTML elements of the web app. For each park object, an article element is created with an <h3> and a <p> element. The text content of the h3 element is set equal to the name value of that park object. The p element is set equal to the state value of the object. If the object in question has a visited value of true, then the article element receives the id of "visited". If the visited value is false, then the article element receives the id of "not-visited".
 //The getWeather fetch call is used to query the weather database with the respective coordinates of each park. Each time this is called, it creates a <ul> with three <li> elements with the values set equal to data pulled back from the fetch call. The resulting ul is appended to the article container below the park name and state. The article container is returned
-
 
 const buildElementWithText = (el, text) => {
     let newEl = document.createElement(el);
@@ -43,7 +42,7 @@ const buildHTMLforEachPark = (park) => {
     stateElement.textContent = park.state;
     articleElement.appendChild(nameElement);
     articleElement.appendChild(stateElement);
-    
+
     articleElement.setAttribute("style", "display: flex")
     switch (true) {
         case (park.visited):
@@ -84,7 +83,7 @@ const buildHTMLforEachPark = (park) => {
 const appendParksToDom = (parksArray) => {
     const parksFragment = document.createDocumentFragment();
 
-    while(displayContainer.firstChild){
+    while (displayContainer.firstChild) {
         displayContainer.removeChild(displayContainer.firstChild);
     }
 
@@ -116,8 +115,8 @@ const buildHTMLforEachMonument = (monument) => {
     articleElement.appendChild(nameElement);
     articleElement.appendChild(stateElement);
 
-    const dateEstablished = buildElementWithText("p",`Date Established: ${monument.dateEstablished}`);
-    const size = buildElementWithText("p",`Area: ${monument.area}`);
+    const dateEstablished = buildElementWithText("p", `Date Established: ${monument.dateEstablished}`);
+    const size = buildElementWithText("p", `Area: ${monument.area}`);
     articleElement.appendChild(dateEstablished);
     articleElement.appendChild(size);
     articleElement.appendChild(deleteButton);
@@ -130,16 +129,12 @@ const buildHTMLforEachMonument = (monument) => {
             articleElement.classList.add("not-visited");
             break;
     }
-   
-   
-
     return articleElement;
 }
-
 const appendMonumentsToDom = (monumentsArray) => {
     const monumentsFragment = document.createDocumentFragment();
 
-    while(monumentsContainer.firstChild){
+    while (monumentsContainer.firstChild) {
         monumentsContainer.removeChild(monumentsContainer.firstChild);
     }
 
