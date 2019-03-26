@@ -1,5 +1,5 @@
 // Fetch call that gets the data from the parks API we are using. It returns the data in an array of objects.
-const url = "http://localhost:9099";
+const url = "http://localhost:8088";
 
 const getParks = () => {
     return fetch(`${url}/parks`)

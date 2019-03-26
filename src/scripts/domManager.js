@@ -24,19 +24,38 @@ mainHeaderContainer.appendChild(checkBoxOneDiv);
 //Create a function that serves the purpose of creating the HTML elements of the web app. For each park object, an article element is created with an <h3> and a <p> element. The text content of the h3 element is set equal to the name value of that park object. The p element is set equal to the state value of the object. If the object in question has a visited value of true, then the article element receives the id of "visited". If the visited value is false, then the article element receives the id of "not-visited".
 //The getWeather fetch call is used to query the weather database with the respective coordinates of each park. Each time this is called, it creates a <ul> with three <li> elements with the values set equal to data pulled back from the fetch call. The resulting ul is appended to the article container below the park name and state. The article container is returned
 
-const buildElementWithText = (el, text) => {
+const buildElementWithText = (el, text, id, value) => {
     let newEl = document.createElement(el);
     newEl.textContent = text;
+    if (id) {
+        newEl.setAttribute("id", id);
+    }
+
+    if(value){
+        newEl.setAttribute("value", value);
+    }
     return newEl;
 }
 
+const clearElement = domElement => {
+    while(domElement.firstChild){
+        domElement.removeChild(domElement.firstChild)
+    }
+};
+
 const buildHTMLforEachPark = (park) => {
     const articleElement = document.createElement("article");
+    articleElement.id = `national-park--${park.id}`;
     const nameElement = document.createElement("h3");
     const deleteButton = document.createElement("button");
+    const editButton = document.createElement("button");
+    const visitedPark = document.createElement("button");
     deleteButton.textContent = "Delete Park";
-    deleteButton.id = `delete-park--${park.id}`;
+    editButton.textContent = "Edit Park";
+    visitedPark.textContent = "Visited Park";
     deleteButton.addEventListener("click", handleParkDelete);
+    editButton.addEventListener("click", handleParkEdit);
+
     nameElement.textContent = park.name;
     const stateElement = document.createElement("p");
     stateElement.textContent = park.state;
@@ -53,7 +72,6 @@ const buildHTMLforEachPark = (park) => {
             break;
     }
     getWeather(park.latitude, park.longitude).then(response => {
-        const fragment = document.createDocumentFragment();
         const pHead = document.createElement("h4");
         pHead.id = "weather-header";
         pHead.style.textDecoration = "underline"
@@ -68,10 +86,11 @@ const buildHTMLforEachPark = (park) => {
         parkList.appendChild(currentLi);
         parkList.appendChild(hourlyLi);
         parkList.appendChild(weeklyLi);
-        fragment.appendChild(pHead);
-        fragment.appendChild(parkList);
-        fragment.appendChild(deleteButton);
-        articleElement.appendChild(fragment);
+        articleElement.appendChild(pHead);
+        articleElement.appendChild(parkList);
+        articleElement.appendChild(deleteButton);
+        articleElement.appendChild(editButton);
+        articleElement.appendChild(visitedPark);
     })
 
     return articleElement;
